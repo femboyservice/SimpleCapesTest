@@ -48,23 +48,32 @@ public class CapeDownloader {
                         .getDynamicTextureLocation(Reference.MOD_ID, new DynamicTexture(ImageUtils.getImageFromURL(SimpleCapes.getSettings().getCapeURL())));
                 break;
             case LOCAL:
-                location = Minecraft.getMinecraft().getTextureManager()
-                        .getDynamicTextureLocation(Reference.MOD_ID, new DynamicTexture(ImageUtils.getImageFromFile(SimpleCapes.getSettings().getCapePath())));
+                BufferedImage image = ImageUtils.getImageFromFile(SimpleCapes.getSettings().getCapePath());
+                if (image == null) {
+                    break;
+                }
+
+                location = Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(Reference.MOD_ID, new DynamicTexture(image));
                 break;
             case CLIPBOARD:
                 if (!SimpleCapes.getSettings().isClipboardSaved()) {
                     BufferedImage clipboard = ImageUtils.getImageFromClipboard();
+
                     if (clipboard != null) {
-                        location = Minecraft.getMinecraft().getTextureManager()
-                                .getDynamicTextureLocation(Reference.MOD_ID, new DynamicTexture(clipboard));
+                        location = Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(Reference.MOD_ID, new DynamicTexture(clipboard));
                     }
                 } else {
 					BufferedImage cape = ImageUtils.getImageFromFile("clipboard.png");
-				    location = Minecraft.getMinecraft().getTextureManager()
-                                .getDynamicTextureLocation(Reference.MOD_ID, new DynamicTexture(cape));
+                    if (cape == null) {
+                        break;
+                    }
+
+				    location = Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(Reference.MOD_ID, new DynamicTexture(cape));
 				}
+
                 break;
         }
+
         return location;
     }
 

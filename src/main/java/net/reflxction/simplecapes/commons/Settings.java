@@ -41,6 +41,10 @@ public class Settings {
     // The current cape mode
     private CapeMode currentMode;
 
+    // Whether the cape is animated or not
+    private boolean animated;
+
+
     // Assign all variables
     public Settings() {
         enabled = SimpleCapes.getConfig().get("Enabled", "Enabled", true).getBoolean();
@@ -49,6 +53,7 @@ public class Settings {
         capePath = SimpleCapes.getConfig().get("Cape", "Path", "").getString();
         capeURL = SimpleCapes.getConfig().get("Cape", "URL", "").getString();
         currentMode = CapeMode.fromName(SimpleCapes.getConfig().get("Cape", "Mode", "URL").getString());
+        animated = SimpleCapes.getConfig().get("Settings", "Animated", false).getBoolean();
     }
 
     /**
@@ -151,6 +156,7 @@ public class Settings {
         if (currentMode == CapeMode.CLIPBOARD) {
             SimpleCapes.getConfig().get("Cape", "ClipboardSaved", false).set(true);
         }
+
         SimpleCapes.getConfig().save();
     }
 
@@ -183,4 +189,12 @@ public class Settings {
         return SimpleCapes.getConfig().get("Cape", "ClipboardSaved", false).getBoolean();
     }
 
+
+    public void setAnimated(boolean value) {
+        animated = value;
+    }
+
+    public boolean getAnimated() {
+        return animated;
+    }
 }

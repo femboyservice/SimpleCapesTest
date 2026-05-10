@@ -57,14 +57,13 @@ public class ImageUtils {
      * @return A buffered image with the name
      */
     public static BufferedImage getImageFromFile(String fileName) {
-        File file = new File(Minecraft.getMinecraft().mcDataDir, Reference.MOD_ID + File.separator + fileName);
-        BufferedImage image = null;
+        File file = new File(Minecraft.getMinecraft().mcDataDir, (Reference.MOD_ID + File.separator + fileName));
+
         try {
-            image = ImageIO.read(file);
-        } catch (IOException e) {
-            e.printStackTrace();
+            return ImageIO.read(file);
+        } catch (IOException exception) {
+            return null;
         }
-        return image;
     }
 
     /**

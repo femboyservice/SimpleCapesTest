@@ -38,7 +38,7 @@ import java.util.List;
 public class SCCommand implements ICommand {
 
     // Red chat color, since Forge has issues when sending messages (if string needs a new line it becomes white)
-    private ChatColor red = ChatColor.RED;
+    private final ChatColor red = ChatColor.RED;
 
     /**
      * Gets the name of the command
@@ -65,6 +65,8 @@ public class SCCommand implements ICommand {
                 red +
                 "/ url [cape image url] " +
                 red +
+                "/ animate " +
+                red +
                 "/ " +
                 red +
                 "clipboard>";
@@ -89,6 +91,10 @@ public class SCCommand implements ICommand {
                 break;
             case 1:
                 switch (args[0]) {
+                    case "animate":
+                        SimpleCapes.getSettings().setAnimated(!SimpleCapes.getSettings().getAnimated());
+                        SimpleSender.send(SimpleCapes.getSettings().getAnimated() ? "&aCape Animations has been enabled" : "&cCape Animations has been disabled. &cSwitch &cworlds &cto &csee &cchanges.");
+                        break;
                     case "toggle":
                         SimpleCapes.getSettings().setEnabled(!SimpleCapes.getSettings().isEnabled());
                         SimpleSender.send(SimpleCapes.getSettings().isEnabled() ? "&aSimpleCapes has been enabled" : "&cSimpleCapes has been disabled. &cSwitch &cworlds &cto &csee &cchanges.");
@@ -145,7 +151,7 @@ public class SCCommand implements ICommand {
                     case "local":
                         String name = args[1];
                         if (ImageUtils.getImageFromFile(name) == null) {
-                            SimpleSender.send("&cInvalid image name");
+                            SimpleSender.send("&cInvalid image name (srupid)");
                         } else {
                             SimpleCapes.getSettings().setCurrentMode(CapeMode.LOCAL);
                             SimpleCapes.getSettings().setCapePath(name);
@@ -173,6 +179,7 @@ public class SCCommand implements ICommand {
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         List<String> tab = new ArrayList<>();
         tab.add("toggle");
+        tab.add("animate");
         tab.add("update");
         tab.add("check");
         tab.add("url");

@@ -15,6 +15,7 @@
  */
 package net.reflxction.simplecapes;
 
+import com.luciad.imageio.webp.WebPImageReaderSpi;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -27,6 +28,7 @@ import net.reflxction.simplecapes.commons.Settings;
 import net.reflxction.simplecapes.updater.UpdateManager;
 import net.reflxction.simplecapes.utils.Reference;
 
+import javax.imageio.spi.IIORegistry;
 import java.io.File;
 
 /**
@@ -55,6 +57,7 @@ public class SimpleCapes {
             // Server side proxy
             serverSide = Reference.SERVER_PROXY
     )
+
     private static IProxy proxy;
 
     // The update manager
@@ -79,6 +82,9 @@ public class SimpleCapes {
     @EventHandler
     public void onFMLPreInitialization(FMLPreInitializationEvent event) {
         proxy.preInit(event);
+
+        IIORegistry registry = IIORegistry.getDefaultInstance();
+        registry.registerServiceProvider(new WebPImageReaderSpi());
     }
 
     /**
@@ -130,5 +136,4 @@ public class SimpleCapes {
     public static UpdateManager getUpdateManager() {
         return updateManager;
     }
-
 }

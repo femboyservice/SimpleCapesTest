@@ -49,36 +49,42 @@ public class CapeLayer implements LayerRenderer<AbstractClientPlayer> {
         if (!SimpleCapes.getSettings().isEnabled()) return;
         final UUID playerUUID = Minecraft.getMinecraft().getSession().getProfile().getId();
         if (!entity.getPersistentID().equals(playerUUID)) return;
+
         if (!entity.isInvisible() && entity.isWearing(EnumPlayerModelParts.CAPE)) {
             float f9 = 0.14F;
             float f10 = 0.0F;
+
             if (entity.isSneaking()) {
                 f9 = 0.1F;
                 f10 = 0.09F;
             }
+
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
             try {
                 this.playerRenderer.bindTexture(CapeDownloader.DOWNLOADER.getCachedTexture());
-            } catch (NullPointerException ignored) {
-            }
+            } catch (NullPointerException ignored) {}
+
             GlStateManager.pushMatrix();
             GlStateManager.translate(0.0F, f10, f9);
             double d0 = entity.prevChasingPosX + (entity.chasingPosX - entity.prevChasingPosX) * (double) partialTicks - (entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks);
             double d1 = entity.prevChasingPosY + (entity.chasingPosY - entity.prevChasingPosY) * (double) partialTicks - (entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks);
             double d2 = entity.prevChasingPosZ + (entity.chasingPosZ - entity.prevChasingPosZ) * (double) partialTicks - (entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks);
             float f = entity.prevRenderYawOffset + (entity.renderYawOffset - entity.prevRenderYawOffset) * partialTicks;
-            double d3 = (double) MathHelper.sin(f * 0.017453292F);
-            double d4 = (double) (-MathHelper.cos(f * 0.017453292F));
+            double d3 = MathHelper.sin(f * 0.017453292F);
+            double d4 = (-MathHelper.cos(f * 0.017453292F));
             float f1 = (float) d1 * 10.0F;
             f1 = MathHelper.clamp_float(f1, 3.0F, 32.0F);
             float f2 = (float) (d0 * d3 + d2 * d4) * 100.0F;
             float f3 = (float) (d0 * d4 - d2 * d3) * 100.0F;
+
             if (f2 < 0.0F) {
                 f2 = 0.0F;
             }
 
             float f4 = entity.prevCameraYaw + (entity.cameraYaw - entity.prevCameraYaw) * partialTicks;
             f1 += MathHelper.sin((entity.prevDistanceWalkedModified + (entity.distanceWalkedModified - entity.prevDistanceWalkedModified) * partialTicks) * 6.0F) * 32.0F * f4;
+
             if (entity.isSneaking()) {
                 f1 += 20.0F;
             }

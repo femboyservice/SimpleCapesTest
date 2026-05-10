@@ -30,13 +30,24 @@ import net.reflxction.simplecapes.cape.CapeLayer;
 public class EntityWorldJoinListener {
 
     // Minecraft instance
-    private Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getMinecraft();
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        if (!SimpleCapes.getSettings().isEnabled()) return; // Return if the mod isn't enabled
-        if (!(event.entity instanceof EntityPlayer)) return; // Return if the entity wasn't a player
-        if (event.entity.getPersistentID().equals(mc.getSession().getProfile().getId())) renderCape();
+        // Return if the mod isn't enabled
+        if (!SimpleCapes.getSettings().isEnabled()) {
+            return;
+        }
+
+        // Return if the entity wasn't a player
+        if (!(event.entity instanceof EntityPlayer)) {
+            return;
+        }
+
+        // render cape
+        if (event.entity.getPersistentID().equals(mc.getSession().getProfile().getId())) {
+            renderCape();
+        }
     }
 
     /**
@@ -44,6 +55,7 @@ public class EntityWorldJoinListener {
      */
     private void renderCape() {
         Minecraft.getMinecraft().gameSettings.setModelPartEnabled(EnumPlayerModelParts.CAPE, true);
+
         for (RenderPlayer render : Minecraft.getMinecraft().getRenderManager().getSkinMap().values()) {
             render.addLayer(new CapeLayer(render));
         }
