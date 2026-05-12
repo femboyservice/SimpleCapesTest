@@ -21,9 +21,9 @@ Command: **/simplecapes**. Aliases: **/sc**, **/Sc**
 * /sc local mojang.png
 
 ## Animated Examples
-![exemple image](https://r2.e-z.host/dea88475-106f-4841-8b38-faf65c8c42bc/y8atcb1m.png)
+![example image](https://r2.e-z.host/dea88475-106f-4841-8b38-faf65c8c42bc/y8atcb1m.png)
 In a directory named after the cape, make every frame of your cape a valid cape with each frame
-named the frameIndex, starting from 1.
+named the frameIndex, starting from 1. (1.png, 2.png, 3.png, ...)
 Make a new file named "config.json" and have it's content set to this:
 ```json
 {
@@ -31,7 +31,9 @@ Make a new file named "config.json" and have it's content set to this:
   "frameAmount": 20
 }
 ```
-frameTime is the amount of tick waited before going to the next image (here 3ticks = 0.15s)
+frameTime is the amount of tick waited before going to the next image (here 3ticks = 0.15s) 
 and frameAmount the amount of frames there is (here 20 images)
 
 **A valid example of an animated cape can be found in "./animatedExample" in this repo.
+Here's a video:
+<video src="https://i.e-z.host/media/esyakvxr.mp4" width="1920" height="1080"></video>
