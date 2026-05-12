@@ -15,6 +15,7 @@
  */
 package net.reflxction.simplecapes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luciad.imageio.webp.WebPImageReaderSpi;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -25,7 +26,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.reflxction.simplecapes.proxy.IProxy;
 import net.reflxction.simplecapes.commons.Settings;
-import net.reflxction.simplecapes.updater.UpdateManager;
 import net.reflxction.simplecapes.utils.Reference;
 
 import javax.imageio.spi.IIORegistry;
@@ -41,16 +41,14 @@ import java.io.File;
         acceptedMinecraftVersions = Reference.ACCEPTED_VERSIONS
 )
 public class SimpleCapes {
-
     // Config for saving data
-    private static Configuration config;
+    private static final Configuration config;
 
     // Mod commons
-    private static Settings settings;
+    private static final Settings settings;
 
     // Assign proxies of the mod
     @SidedProxy(
-
             // Client side proxy
             clientSide = Reference.CLIENT_PROXY,
 
@@ -60,8 +58,8 @@ public class SimpleCapes {
 
     private static IProxy proxy;
 
-    // The update manager
-    private static UpdateManager updateManager;
+    // ObjectMapper, used to get CapeConfigs
+    private static final ObjectMapper objectMapper;
 
     /*
      * Initialize variables here
@@ -69,7 +67,8 @@ public class SimpleCapes {
     static {
         config = new Configuration(new File("config/simple-capes.cfg"));
         settings = new Settings();
-        updateManager = new UpdateManager(true);
+        objectMapper = new ObjectMapper();
+
     }
 
     /**
@@ -128,12 +127,7 @@ public class SimpleCapes {
         return settings;
     }
 
-    /**
-     * The mod update manager
-     *
-     * @return An instance of the mod update manager
-     */
-    public static UpdateManager getUpdateManager() {
-        return updateManager;
+    public static ObjectMapper getObjectMapper() {
+        return objectMapper;
     }
 }

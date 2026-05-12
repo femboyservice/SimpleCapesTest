@@ -19,20 +19,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.*;
-import net.reflxction.simplecapes.SimpleCapes;
 import net.reflxction.simplecapes.commands.SCCommand;
-import net.reflxction.simplecapes.commons.Multithreading;
 import net.reflxction.simplecapes.listeners.EntityWorldJoinListener;
-import net.reflxction.simplecapes.updater.NotificationSender;
-import net.reflxction.simplecapes.updater.VersionChecker;
 import net.reflxction.simplecapes.utils.Reference;
+import net.reflxction.simplecapes.listeners.tickHandler;
 
 import java.io.File;
 
 public class ClientProxy implements IProxy {
-
-    // Instance of the version checker
-    private static VersionChecker checker = new VersionChecker();
 
     /**
      * Called before the mod is fully initialized
@@ -43,12 +37,12 @@ public class ClientProxy implements IProxy {
      */
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        if (SimpleCapes.getSettings().sendNotification()) {
-            new Multithreading<>().schedule(o -> checker.updateState());
-        }
         ClientCommandHandler.instance.registerCommand(new SCCommand());
         File modDirectory = new File(Minecraft.getMinecraft().mcDataDir, Reference.MOD_ID);
-        if (!modDirectory.exists()) modDirectory.mkdirs();
+
+        if (!modDirectory.exists()) {
+            modDirectory.mkdirs();
+        }
     }
 
     /**
@@ -60,8 +54,8 @@ public class ClientProxy implements IProxy {
      */
     @Override
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new NotificationSender());
         MinecraftForge.EVENT_BUS.register(new EntityWorldJoinListener());
+        MinecraftForge.EVENT_BUS.register(new tickHandler());
     }
 
     /**
@@ -87,9 +81,5 @@ public class ClientProxy implements IProxy {
     @Override
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new SCCommand());
-    }
-
-    public static VersionChecker getChecker() {
-        return checker;
     }
 }

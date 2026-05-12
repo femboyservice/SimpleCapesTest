@@ -21,15 +21,12 @@ import net.minecraft.util.BlockPos;
 import net.reflxction.simplecapes.SimpleCapes;
 import net.reflxction.simplecapes.cape.CapeDownloader;
 import net.reflxction.simplecapes.cape.CapeMode;
-import net.reflxction.simplecapes.commons.Multithreading;
 import net.reflxction.simplecapes.commons.SimpleSender;
-import net.reflxction.simplecapes.proxy.ClientProxy;
 import net.reflxction.simplecapes.utils.ChatColor;
 import net.reflxction.simplecapes.utils.ImageUtils;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,24 +54,27 @@ public class SCCommand implements ICommand {
     public String getCommandUsage(ICommandSender sender) {
         return "<toggle " +
                 red +
-                "/ update " +
+                "/ animate " +
                 red +
-                "/ check " +
+                "/ config [cape config path] " +
                 red +
                 "/ local [cape image name] " +
                 red +
                 "/ url [cape image url] " +
-                red +
-                "/ animate " +
                 red +
                 "/ " +
                 red +
                 "clipboard>";
     }
 
+
+    private final List<String> commandAliases = new ArrayList<>(); {
+        commandAliases.add("sc");
+        commandAliases.add("Sc");
+    }
     @Override
     public List<String> getCommandAliases() {
-        return Collections.singletonList("sc");
+        return commandAliases;
     }
 
     /**
@@ -92,29 +92,12 @@ public class SCCommand implements ICommand {
             case 1:
                 switch (args[0]) {
                     case "animate":
-                        SimpleCapes.getSettings().setAnimated(!SimpleCapes.getSettings().getAnimated());
-                        SimpleSender.send(SimpleCapes.getSettings().getAnimated() ? "&aCape Animations has been enabled" : "&cCape Animations has been disabled. &cSwitch &cworlds &cto &csee &cchanges.");
+                        SimpleCapes.getSettings().setAnimated(!SimpleCapes.getSettings().isAnimated());
+                        SimpleSender.send(SimpleCapes.getSettings().isAnimated() ? "&aCape Animations has been enabled" : "&cCape Animations has been disabled.");
                         break;
                     case "toggle":
                         SimpleCapes.getSettings().setEnabled(!SimpleCapes.getSettings().isEnabled());
                         SimpleSender.send(SimpleCapes.getSettings().isEnabled() ? "&aSimpleCapes has been enabled" : "&cSimpleCapes has been disabled. &cSwitch &cworlds &cto &csee &cchanges.");
-                        break;
-                    case "update":
-                        if (ClientProxy.getChecker().isUpdateAvailable()) {
-                            new Multithreading<>().schedule((o) -> {
-                                if (SimpleCapes.getUpdateManager().updateMod()) {
-                                    SimpleSender.send("&aSuccessfully updated the mod! Restart your game to see changes.");
-                                } else {
-                                    SimpleSender.send("&cFailed to update mod! To avoid any issues, delete the mod jar and install it manually again.");
-                                }
-                            });
-                        } else {
-                            SimpleSender.send("&cNo updates found. You're up to date!");
-                        }
-                        break;
-                    case "check":
-                        SimpleCapes.getSettings().setSendNotification(!SimpleCapes.getSettings().sendNotification());
-                        SimpleSender.send(SimpleCapes.getSettings().sendNotification() ? "&aYou will be notified on updates" : "&cYou will no longer be notified " + red + "on updates");
                         break;
                     case "clipboard":
                         if (ImageUtils.getImageFromClipboard() == null) {
@@ -175,17 +158,18 @@ public class SCCommand implements ICommand {
         return true;
     }
 
+    private final List<String> tabCompletions = new ArrayList<>(); {
+        tabCompletions.add("toggle");
+        tabCompletions.add("animate");
+        tabCompletions.add("update");
+        tabCompletions.add("check");
+        tabCompletions.add("url");
+        tabCompletions.add("local");
+        tabCompletions.add("clipboard");
+    }
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-        List<String> tab = new ArrayList<>();
-        tab.add("toggle");
-        tab.add("animate");
-        tab.add("update");
-        tab.add("check");
-        tab.add("url");
-        tab.add("local");
-        tab.add("clipboard");
-        return tab;
+        return tabCompletions;
     }
 
     /**

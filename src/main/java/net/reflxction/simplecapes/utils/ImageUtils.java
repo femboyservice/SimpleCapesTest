@@ -98,6 +98,7 @@ public class ImageUtils {
                 e.printStackTrace();
             }
         }
+
         return null;
     }
 
@@ -110,5 +111,4 @@ public class ImageUtils {
             e.printStackTrace();
         }
     }
-
 }

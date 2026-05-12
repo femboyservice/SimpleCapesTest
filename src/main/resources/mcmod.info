@@ -1,11 +1,11 @@
 [
 {
   "modid": "simplecapes",
-  "name": "Simple Capes",
+  "name": "Simple Capes Test",
   "description": "A mod which adds a cape to the player.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "http://www.github.com/ReflxctionDev/SimpleCapes",
+  "url": "https://github.com/femboyservice/SimpleCapesTest",
   "updateUrl": "",
   "authorList": ["Reflxction", "yaoiservice"],
   "credits": "Reflxction",

@@ -26,11 +26,8 @@ public class Settings {
     // Whether the mod is enabled or not
     private boolean enabled;
 
-    // Whether the mod should send a notification to the player if an update is available
-    private boolean sendUpdateNotifications;
-
     // Whether the cape has been set or not. This is to avoid unnecessary crashes
-    private boolean capeSet = false;
+    private boolean capeSet;
 
     // The current cape URL. This is only used if the cape mode is URL
     private String capeURL;
@@ -48,7 +45,6 @@ public class Settings {
     // Assign all variables
     public Settings() {
         enabled = SimpleCapes.getConfig().get("Enabled", "Enabled", true).getBoolean();
-        sendUpdateNotifications = SimpleCapes.getConfig().get("Settings", "SendUpdates", true).getBoolean();
         capeSet = SimpleCapes.getConfig().get("Cape", "Set", false).getBoolean();
         capePath = SimpleCapes.getConfig().get("Cape", "Path", "").getString();
         capeURL = SimpleCapes.getConfig().get("Cape", "URL", "").getString();
@@ -73,26 +69,6 @@ public class Settings {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
         SimpleCapes.getConfig().get("Enabled", "Enabled", true).set(enabled);
-        SimpleCapes.getConfig().save();
-    }
-
-    /**
-     * Whether the mod should send notifications if an update is available
-     *
-     * @return ^
-     */
-    public boolean sendNotification() {
-        return sendUpdateNotifications;
-    }
-
-    /**
-     * Sets whether the mod should notifications if an update is available
-     *
-     * @param flag Boolean to set
-     */
-    public void setSendNotification(boolean flag) {
-        this.sendUpdateNotifications = flag;
-        SimpleCapes.getConfig().get("Settings", "SendUpdates", true).set(flag);
         SimpleCapes.getConfig().save();
     }
 
@@ -189,12 +165,23 @@ public class Settings {
         return SimpleCapes.getConfig().get("Cape", "ClipboardSaved", false).getBoolean();
     }
 
-
-    public void setAnimated(boolean value) {
-        animated = value;
+    /**
+     * Sets whether the cape should be animated or not.
+     *
+     * @param animated New value to set
+     */
+    public void setAnimated(boolean animated) {
+        this.animated = animated;
+        SimpleCapes.getConfig().get("Settings", "Animated", false).set(animated);
+        SimpleCapes.getConfig().save();
     }
 
-    public boolean getAnimated() {
+    /**
+     * Whether the cape is animated or not.
+     *
+     * @return Whether the cape is animated or not.
+     */
+    public boolean isAnimated() {
         return animated;
     }
 }

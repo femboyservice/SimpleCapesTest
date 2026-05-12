@@ -33,15 +33,11 @@ public class Reference {
     public static final String ACCEPTED_VERSIONS = "[1.8.9]";
 
     // Mod prefix (for sending messages)
-    public static final String PREFIX = ChatColor.format("&9[&bSimpleCapes&9] ");
+    public static final String PREFIX = ChatColor.format("&8{&5SimpleCapes&dTest&8} ");
 
     // Client proxy handler
     public static final String CLIENT_PROXY = "net.reflxction.simplecapes.proxy.ClientProxy";
 
     // Server proxy handler
     public static final String SERVER_PROXY = "net.reflxction.simplecapes.proxy.ServerProxy";
-
-    // The Git Repository name
-    public static final String REPOSITORY_NAME = "SimpleCapes";
-
 }
