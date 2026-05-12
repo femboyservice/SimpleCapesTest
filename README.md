@@ -36,4 +36,5 @@ and frameAmount the amount of frames there is (here 20 images)
 
 **A valid example of an animated cape can be found in "./animatedExample" in this repo.
 Here's a video:
-<video src="https://i.e-z.host/media/esyakvxr.mp4" width="1920" height="1080"></video>
+
+![example video](https://github.com/user-attachments/assets/d1dfc532-3ad1-4fed-9b39-e343f9d2e819)
