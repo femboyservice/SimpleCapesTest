@@ -41,7 +41,17 @@ public class ClientProxy implements IProxy {
         File modDirectory = new File(Minecraft.getMinecraft().mcDataDir, Reference.MOD_ID);
 
         if (!modDirectory.exists()) {
-            modDirectory.mkdirs();
+            boolean success = modDirectory.mkdirs();
+
+            if (success) {
+                File jsonCapes = new File(modDirectory, "capes.json");
+
+                if (!jsonCapes.exists()) {
+                    try {
+                        jsonCapes.createNewFile();
+                    } catch (Exception ignored) {}
+                }
+            }
         }
     }
 

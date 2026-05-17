@@ -62,7 +62,9 @@ public class CapeLayer implements LayerRenderer<AbstractClientPlayer> {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
             try {
-                this.playerRenderer.bindTexture(CapeDownloader.DOWNLOADER.getCachedTexture());
+                if (CapeDownloader.DOWNLOADER.getCachedTexture() != null) {
+                    this.playerRenderer.bindTexture(CapeDownloader.DOWNLOADER.getCachedTexture());
+                }
             } catch (NullPointerException ignored) {}
 
             GlStateManager.pushMatrix();

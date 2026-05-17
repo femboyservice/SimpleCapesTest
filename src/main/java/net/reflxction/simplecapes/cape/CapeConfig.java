@@ -1,14 +1,21 @@
 package net.reflxction.simplecapes.cape;
 
 public class CapeConfig {
-    private int frameTime;
-    private int frameAmount;
+    private String path;
+    private boolean animated;
 
-    public int getFrameTime() {
-        return frameTime;
+    // askip j'en ai besoin
+    public CapeConfig() {}
+
+    public CapeConfig(String path, boolean animated) {
+        this.path = path;
+        this.animated = animated;
     }
 
-    public int getFrameAmount() {
-        return frameAmount;
+    public String getPath() {
+        return path;
+    }
+    public boolean isAnimated() {
+        return animated;
     }
 }

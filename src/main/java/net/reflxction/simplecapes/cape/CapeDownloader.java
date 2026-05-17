@@ -86,11 +86,11 @@ public class CapeDownloader {
                 break;
             case LOCAL:
                 if (SimpleCapes.getSettings().isAnimated()) {
-                    CapeConfig capeConfig = getCapeConfig();
+                    CapeAnimationConfig capeAnimationConfig = getCapeConfig();
 
-                    if (capeConfig != null) {
-                        setCurrentFrameAmount((capeConfig.getFrameAmount() != 0 ? capeConfig.getFrameAmount() : 1));
-                        setCurrentFrameTime(capeConfig.getFrameTime() != 0 ? capeConfig.getFrameTime() : 5);
+                    if (capeAnimationConfig != null) {
+                        setCurrentFrameAmount((capeAnimationConfig.getFrameAmount() != 0 ? capeAnimationConfig.getFrameAmount() : 1));
+                        setCurrentFrameTime(capeAnimationConfig.getFrameTime() != 0 ? capeAnimationConfig.getFrameTime() : 5);
 
                         String capePath = SimpleCapes.getSettings().getCapePath();
                         String directory = capePath.substring(0, (capePath.lastIndexOf('/') + 1));
@@ -157,9 +157,9 @@ public class CapeDownloader {
     /**
      * The cape config as a config class
      *
-     * @return The cape config as a config class "CapeConfig"
+     * @return The cape config as a config class "CapeAnimationConfig"
      */
-    private CapeConfig getCapeConfig() {
+    private CapeAnimationConfig getCapeConfig() {
         if (SimpleCapes.getSettings().getCurrentMode().equals(CapeMode.LOCAL)) {
             String capePath = SimpleCapes.getSettings().getCapePath();
 
@@ -169,12 +169,12 @@ public class CapeDownloader {
 
                 if (capeConfigFile.exists()) {
                     try {
-                        CapeConfig capeConfig = SimpleCapes.getObjectMapper().readValue(capeConfigFile, CapeConfig.class);
+                        CapeAnimationConfig capeAnimationConfig = SimpleCapes.getObjectMapper().readValue(capeConfigFile, CapeAnimationConfig.class);
 
-                        if (capeConfig.getFrameAmount() != 0 && capeConfig.getFrameTime() != 0) {
-                            return capeConfig;
+                        if (capeAnimationConfig.getFrameAmount() != 0 && capeAnimationConfig.getFrameTime() != 0) {
+                            return capeAnimationConfig;
                         } else {
-                            if (capeConfig.getFrameTime() == 0) {
+                            if (capeAnimationConfig.getFrameTime() == 0) {
                                 SimpleSender.send("&cInvalid config. (frameTime = 0)");
                             } else {
                                 SimpleSender.send("&cInvalid config. (frameAmount = 0)");
@@ -184,7 +184,6 @@ public class CapeDownloader {
                         }
                     } catch (IOException e) {
                         SimpleSender.send("&cIOException thrown?");
-                        e.printStackTrace();
                         return null;
                     }
                 } else {

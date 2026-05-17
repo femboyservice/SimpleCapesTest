@@ -21,19 +21,19 @@ package net.reflxction.simplecapes.utils;
 public class Reference {
 
     // Mod ID (for Forge initialization)
-    public static final String MOD_ID = "simplecapes";
+    public static final String MOD_ID = "simplecapestest";
 
     // Mod name
     public static final String NAME = "Simple Capes";
 
     // Mod version
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "1.1";
 
     // Minecraft versions that the mod works on
     public static final String ACCEPTED_VERSIONS = "[1.8.9]";
 
     // Mod prefix (for sending messages)
-    public static final String PREFIX = ChatColor.format("&8{&5SimpleCapes&dTest&8} ");
+    public static final String PREFIX = ChatColor.format("&8{&5SimpleCapes&dTest&8}&9 ");
 
     // Client proxy handler
     public static final String CLIENT_PROXY = "net.reflxction.simplecapes.proxy.ClientProxy";

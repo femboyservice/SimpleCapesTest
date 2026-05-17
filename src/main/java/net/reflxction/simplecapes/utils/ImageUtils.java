@@ -33,6 +33,10 @@ import java.net.URL;
  */
 public class ImageUtils {
 
+    public static String getModPath(String fileName) {
+        return (Reference.MOD_ID + File.separator + fileName);
+    }
+
     /**
      * Fetches a {@link BufferedImage} from the given URL
      *
@@ -57,7 +61,7 @@ public class ImageUtils {
      * @return A buffered image with the name
      */
     public static BufferedImage getImageFromFile(String fileName) {
-        File file = new File(Minecraft.getMinecraft().mcDataDir, (Reference.MOD_ID + File.separator + fileName));
+        File file = new File(Minecraft.getMinecraft().mcDataDir, getModPath(fileName));
 
         try {
             return ImageIO.read(file);
@@ -95,7 +99,7 @@ public class ImageUtils {
                 Image image = (Image) transferable.getTransferData(DataFlavor.imageFlavor);
                 return toBufferedImage(image);
             } catch (UnsupportedFlavorException | IOException e) {
-                e.printStackTrace();
+                return null;
             }
         }
 
@@ -104,11 +108,10 @@ public class ImageUtils {
 
     public static void saveImage(BufferedImage image) {
         try {
-            File clipboardFile = new File(Minecraft.getMinecraft().mcDataDir, Reference.MOD_ID + File.separator + "clipboard.png");
+            File clipboardFile = new File(Minecraft.getMinecraft().mcDataDir, getModPath("clipboard.png"));
             ImageIO.write(image, "png", clipboardFile);
         } catch (IOException e) {
             SimpleSender.send("&cFailed to save &cimage!");
-            e.printStackTrace();
         }
     }
 }

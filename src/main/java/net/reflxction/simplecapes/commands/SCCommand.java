@@ -19,14 +19,17 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
 import net.reflxction.simplecapes.SimpleCapes;
+import net.reflxction.simplecapes.cape.CapeConfig;
 import net.reflxction.simplecapes.cape.CapeDownloader;
 import net.reflxction.simplecapes.cape.CapeMode;
 import net.reflxction.simplecapes.commons.SimpleSender;
 import net.reflxction.simplecapes.utils.ChatColor;
 import net.reflxction.simplecapes.utils.ImageUtils;
+import net.reflxction.simplecapes.utils.Reference;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -42,7 +45,7 @@ public class SCCommand implements ICommand {
      */
     @Override
     public String getCommandName() {
-        return "simplecapes";
+        return "simplecapestest";
     }
 
     /**
@@ -52,11 +55,11 @@ public class SCCommand implements ICommand {
      */
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "<toggle " +
+        return  "<" +
+                red +
+                "toggle " +
                 red +
                 "/ animate " +
-                red +
-                "/ config [cape config path] " +
                 red +
                 "/ local [cape image name] " +
                 red +
@@ -64,13 +67,16 @@ public class SCCommand implements ICommand {
                 red +
                 "/ " +
                 red +
-                "clipboard>";
+                "clipboard" +
+                red +
+                ">";
     }
 
 
     private final List<String> commandAliases = new ArrayList<>(); {
-        commandAliases.add("sc");
-        commandAliases.add("Sc");
+        commandAliases.add("Simplecapestest");
+        commandAliases.add("sct");
+        commandAliases.add("Sct");
     }
     @Override
     public List<String> getCommandAliases() {
@@ -122,7 +128,7 @@ public class SCCommand implements ICommand {
                         String url = args[1];
                         BufferedImage capeImage = ImageUtils.getImageFromURL(url);
                         if (capeImage == null) {
-                            SimpleSender.send("&cInvalid image URL!");
+                            SimpleSender.send("&cInvalid image URL !");
                         } else {
                             SimpleCapes.getSettings().setCurrentMode(CapeMode.URL);
                             SimpleCapes.getSettings().setCapeURL(url);
@@ -133,14 +139,41 @@ public class SCCommand implements ICommand {
                         break;
                     case "local":
                         String name = args[1];
-                        if (ImageUtils.getImageFromFile(name) == null) {
-                            SimpleSender.send("&cInvalid image name (srupid)");
+
+                        if (name.contains(".")) {
+                            // format normal (example: animatedExample/1.png)
+                            if (ImageUtils.getImageFromFile(name) == null) {
+                                SimpleSender.send("&cInvalid image path !");
+                            } else {
+                                SimpleCapes.getSettings().setCurrentMode(CapeMode.LOCAL);
+                                SimpleCapes.getSettings().setCapePath(name);
+                                CapeDownloader.DOWNLOADER.updateCachedTexture();
+                                SimpleCapes.getSettings().setCapeSet(true);
+                                SimpleSender.send("&aSuccessfully updated cape image.");
+                            }
                         } else {
-                            SimpleCapes.getSettings().setCurrentMode(CapeMode.LOCAL);
-                            SimpleCapes.getSettings().setCapePath(name);
-                            CapeDownloader.DOWNLOADER.updateCachedTexture();
-                            SimpleCapes.getSettings().setCapeSet(true);
-                            SimpleSender.send("&aSuccessfully updated cape image.");
+                            // format du json (example: animatedExample)
+                            final HashMap<String, CapeConfig> capesMap = SimpleCapes.getSettings().getCustomCapesMap();
+
+                            if (capesMap != null && capesMap.get(name) != null) {
+                                final CapeConfig capeConfig = capesMap.get(name);
+                                if (ImageUtils.getImageFromFile(capeConfig.getPath()) == null) {
+                                    SimpleSender.send("&cInvalid capes.json path !");
+                                } else {
+                                    SimpleCapes.getSettings().setAnimated(capeConfig.isAnimated());
+                                    SimpleCapes.getSettings().setCurrentMode(CapeMode.LOCAL);
+                                    SimpleCapes.getSettings().setCapePath(capeConfig.getPath());
+                                    CapeDownloader.DOWNLOADER.updateCachedTexture();
+                                    SimpleCapes.getSettings().setCapeSet(true);
+                                    SimpleSender.send("&aSuccessfully updated cape image.");
+                                }
+                            } else {
+                                if (capesMap == null) {
+                                    SimpleSender.send("&cCouldn't find capes.json in './minecraft/" + Reference.MOD_ID + "/'.");
+                                } else {
+                                    SimpleSender.send("&cKey " + name + " doesn't exist.");
+                                }
+                            }
                         }
                         break;
                 }
@@ -161,22 +194,47 @@ public class SCCommand implements ICommand {
     private final List<String> tabCompletions = new ArrayList<>(); {
         tabCompletions.add("toggle");
         tabCompletions.add("animate");
-        tabCompletions.add("update");
-        tabCompletions.add("check");
         tabCompletions.add("url");
         tabCompletions.add("local");
         tabCompletions.add("clipboard");
     }
+
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-        return tabCompletions;
+        final List<String> returnedCompletions = new ArrayList<>();
+
+        if (args.length == 1) {
+            for (String str: tabCompletions) {
+                if (str.contains(args[0])) {
+                    returnedCompletions.add(str);
+                }
+            }
+        } else if (args.length == 2) {
+            final HashMap<String, CapeConfig> capesMap = SimpleCapes.getSettings().getCustomCapesMap();
+
+            if (capesMap != null) {
+                for (String codeName: capesMap.keySet()) {
+                    if (codeName.contains(args[1])) {
+                        returnedCompletions.add(codeName);
+                    }
+                }
+            }
+        } else if (args.length >= 3) {
+            return null;
+        }
+
+        if (returnedCompletions.isEmpty()) {
+            return tabCompletions;
+        } else {
+            return returnedCompletions;
+        }
     }
 
     /**
      * Return whether the specified command parameter index is a username parameter.
      *
      * @param args  The arguments that were passed
-     * @param index Idk lul
+     * @param index Idk lul <- peak dev here
      */
     @Override
     public boolean isUsernameIndex(String[] args, int index) {
@@ -184,8 +242,7 @@ public class SCCommand implements ICommand {
     }
 
     @Override
-    public int compareTo(ICommand o) {
+    public int compareTo(ICommand object) {
         return 0;
     }
-
 }

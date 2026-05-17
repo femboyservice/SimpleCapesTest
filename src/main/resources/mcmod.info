@@ -1,6 +1,6 @@
 [
 {
-  "modid": "simplecapes",
+  "modid": "simplecapestest",
   "name": "Simple Capes Test",
   "description": "A mod which adds a cape to the player.",
   "version": "${version}",

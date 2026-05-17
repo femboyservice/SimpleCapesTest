@@ -15,6 +15,7 @@
  */
 package net.reflxction.simplecapes;
 
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luciad.imageio.webp.WebPImageReaderSpi;
 import net.minecraftforge.common.config.Configuration;
@@ -68,6 +69,8 @@ public class SimpleCapes {
         config = new Configuration(new File("config/simple-capes.cfg"));
         settings = new Settings();
         objectMapper = new ObjectMapper();
+
+        objectMapper.configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true); // je vous déteste tous, un par un.
 
     }
 

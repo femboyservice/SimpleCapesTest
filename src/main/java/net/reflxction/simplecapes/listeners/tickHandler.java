@@ -10,7 +10,11 @@ public class tickHandler {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
+        if (event.phase != TickEvent.Phase.END ||
+                !SimpleCapes.getSettings().isAnimated() ||
+                !SimpleCapes.getSettings().isEnabled() ||
+                !SimpleCapes.getSettings().isCapeSet())
+        {
             return;
         }
 
@@ -18,12 +22,11 @@ public class tickHandler {
 
         if (tickCounter >= CapeDownloader.DOWNLOADER.getCurrentFrameTime()) {
             tickCounter = 0;
-            doHalfTick();
+            changeTexture();
         }
     }
 
-    private void doHalfTick() {
-        if (!SimpleCapes.getSettings().isAnimated()) { return; }
+    private void changeTexture() {
         CapeDownloader.DOWNLOADER.setCurrentFrame(CapeDownloader.DOWNLOADER.getCurrentFrame() + 1);
 
         if (CapeDownloader.DOWNLOADER.getCurrentFrame() > CapeDownloader.DOWNLOADER.getCurrentFrameAmount()) {

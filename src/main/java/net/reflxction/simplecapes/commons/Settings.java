@@ -15,8 +15,15 @@
  */
 package net.reflxction.simplecapes.commons;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import net.minecraft.client.Minecraft;
 import net.reflxction.simplecapes.SimpleCapes;
+import net.reflxction.simplecapes.cape.CapeConfig;
 import net.reflxction.simplecapes.cape.CapeMode;
+import net.reflxction.simplecapes.utils.Reference;
+
+import java.io.File;
+import java.util.HashMap;
 
 /**
  * Class which contains and manages all the mod commons (while saving it to config etc)
@@ -183,5 +190,17 @@ public class Settings {
      */
     public boolean isAnimated() {
         return animated;
+    }
+
+    public HashMap<String, CapeConfig> getCustomCapesMap() {
+        try {
+            return SimpleCapes.getObjectMapper().readValue(
+                    new File(Minecraft.getMinecraft().mcDataDir, (Reference.MOD_ID + File.separator + "capes.json")),
+                    new TypeReference<HashMap<String, CapeConfig>>() {}
+            );
+        } catch (Exception e) {
+            SimpleSender.send("couldn't get capes.json.");
+            return null;
+        }
     }
 }
