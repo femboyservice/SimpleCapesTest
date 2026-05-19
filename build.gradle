@@ -57,7 +57,7 @@ task embedDeps(type: Jar, dependsOn: reobfJar) {
     manifest {
         attributes FMLCorePluginContainsFMLMod: true
     }
-    archiveName = "SimpleCapes-1.0-SNAPSHOT-fat.jar"
+    archiveName = "SimpleCapes-" + version + "-build.jar"
     destinationDir = jar.destinationDir
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
